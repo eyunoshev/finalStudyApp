@@ -74,7 +74,7 @@ struct MyAsyncImage: View {
     
     var body: some View {
         if let data = imageData {
-            Image(uiImage: UIImage(data: data)!)
+            Image(uiImage: UIImage(data: data) ?? UIImage())
                 .resizable()
                 .scaledToFill()
         } else {

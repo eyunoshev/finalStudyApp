@@ -37,6 +37,7 @@ struct MainMenuView: View {
                 }, label: {
                     Text("Show all News")
                 })
+                .opacity((viewModel.stateNewsForSwitchCase == 1) ? 0 : 1 )
                 .onAppear{
                     viewModel.load(url: URL(string: viewModel.myProfile!.avatar)!){ UIImage in
                         self.image = UIImage
@@ -59,11 +60,29 @@ struct MainMenuView: View {
                 viewModel.updateNews()
             }
             
-            
-            List(viewModel.massiveNews){
-                Content in ListRow(eachNews: Content)
+            switch viewModel.stateNewsForSwitchCase{
+            case 1:
+                List(viewModel.massiveNews){
+                    Content in ListRow(eachNews: Content)
+                        .onAppear {
+                                      // Пагинация
+                            if Content.id == viewModel.massiveNews.last?.id{
+                                          viewModel.addPaginate()
+                                      }
+                                    }
+                }
+                .padding()
+            case 2:
+                List(viewModel.massiveNewsForFind){
+                    Content in ListRow(eachNews: Content)
+                }
+            case 3:
+                List(viewModel.massiveNewsForUsersNews){
+                    Content in ListRow(eachNews: Content)
+                }
+            default:
+                EmptyView()
             }
-            .padding()
         }
         .padding()
         .navigationBarBackButtonHidden(true)

@@ -33,6 +33,7 @@ struct ContentView: View {
                     viewModel.logIn(email: loginTextField, password: passwordTextField){
                         viewModel.imageURL = viewModel.myProfile?.avatar
                         if viewModel.myToken != nil {
+                            viewModel.saveToken(myToken: viewModel.myToken ?? "")
                             isActiveLinkMenu.toggle()
                         }
                     }
@@ -43,6 +44,15 @@ struct ContentView: View {
             }, label: {
                 Text("Log In")
             })
+            .onAppear{
+                viewModel.takeTokenFromKeyChain{
+                    if viewModel.myToken != nil && viewModel.myToken != "" {
+                        viewModel.getUserInfo{
+                            isActiveLinkMenu = true
+                        }
+                    }
+                }
+            }
             .modifier(ModifierButton())
             
             

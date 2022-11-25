@@ -16,6 +16,8 @@ struct AddNewsView: View {
     @State var title: String = ""
     @State var tagss: [String] = [""]
     
+    @State var wrongAlert: Bool = false
+    
     //MARK: - Состояния для ImagePicker
     @State private var image = UIImage()
     @State private var showSheet = false
@@ -48,14 +50,22 @@ struct AddNewsView: View {
             MyTextField(text: "Tags", binding: $tags)
             
             Button(action: {
+                if description != "" && tags != "" && title != "" && image != UIImage(){
                 tagss.removeAll()
                 tagss.append(tags)
                 viewModel.createMyNews(image: image){
-                    mvvmNews.postNews(description: description, image: viewModel.imageURLForAddNews ?? "", tags: tagss, title: title, myToken: viewModel.myToken!)
+                    newsRequests.postNews(description: description, image: viewModel.imageURLForAddNews ?? "", tags: tagss, title: title, myToken: viewModel.myToken!)
                     viewModel.updateNews()}
+                }
+                else{
+                    wrongAlert = true
+                }
             }, label: {
                 Text("Add news")
             })
+            .alert(isPresented: $wrongAlert) {
+                Alert(title: Text("Ошибка!"), message: Text("Заполните все поля и выберите картинку новсти!"), dismissButton: Alert.Button.cancel())
+            }
     }
     }
 }

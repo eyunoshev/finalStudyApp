@@ -64,8 +64,10 @@ struct MyProfileView: View {
             
             
             Button(action: {
-                isActiveNav.toggle()
-                viewModel.myProfile?.token!.removeAll()
+                viewModel.myProfile?.token?.removeAll()
+                viewModel.deleteTokenFromKeyChain(){
+                    isActiveNav.toggle()
+                }
             }, label: {
                 Text("Log out")
             })
