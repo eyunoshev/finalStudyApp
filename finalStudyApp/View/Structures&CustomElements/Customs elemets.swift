@@ -99,6 +99,7 @@ struct MyTextField: View {
     var binding: Binding<String>
     var body: some View {
         TextField(text, text: binding)
-            .modifier(ModifierTextField())
+            .textFieldStyle(OvalTextFieldStyle())
+            .padding(.horizontal, 20)
     }
 }

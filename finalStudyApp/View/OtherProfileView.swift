@@ -9,26 +9,28 @@ import SwiftUI
 
 struct OtherProfileView: View {
     
-    @EnvironmentObject var viewModel: ViewModelNews
-    @State private var image = UIImage()
+    @EnvironmentObject var otherProfileViewMpdel: OtherProfileViewMpdel
+    
+    @State var image = UIImage()
+    
     
     var body: some View {
         
         VStack {
-                Image(uiImage: self.image)
-                    .resizable()
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .modifier(ModifierImageFromImagePicker())
+            Image(uiImage: self.image)
+                .resizable()
+                .frame(width: 100, height: 100, alignment: .center)
+                .modifier(ModifierImageFromImagePicker())
             
-            Text("Name: \(viewModel.otherProfile?.name ?? "")")
-            Text("Email: \(viewModel.otherProfile?.email ?? "")")
-            Text("Role: \(viewModel.otherProfile?.role ?? "")")
-            .onAppear{
-                viewModel.load(url: URL(string: viewModel.otherProfile?.avatar ?? "")!){ UIImage in
-                    self.image = UIImage
+            Text("Name: \(otherProfileViewMpdel.otherProfile?.name ?? "")")
+            Text("Email: \(otherProfileViewMpdel.otherProfile?.email ?? "")")
+            Text("Role: \(otherProfileViewMpdel.otherProfile?.role ?? "")")
+                .onAppear{
+                    otherProfileViewMpdel.load(url: URL(string: otherProfileViewMpdel.otherProfile?.avatar ?? "")!){ UIImage in
+                        self.image = UIImage
+                    }
                 }
-            }
-            List(viewModel.massiveNews){
+            List(otherProfileViewMpdel.massiveNews){
                 Content in ListRow(eachNews: Content)
             }
             .padding()

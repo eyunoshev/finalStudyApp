@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ChangeAndDeleteNewsView: View {
     
-    @EnvironmentObject var viewModel: ViewModelNews
+    @EnvironmentObject var changeAndDeleteNewsViewModel: ChangeAndDeleteNewsViewModel
     
     @State var description: String = ""
     @State var tags: String = ""
     @State var title: String = ""
     @State var tagss: [String] = [""]
+    @State var wrongAlert: Bool = false
     
     //MARK: - Состояния для ImagePicker
     @State private var image = UIImage()
@@ -56,21 +57,31 @@ struct ChangeAndDeleteNewsView: View {
             }
             
             Button(action: {
-                tagss.removeAll()
-                tagss.append(tags)
-                viewModel.uploadFile(image: image){
-                    viewModel.putNews(description: description, image: viewModel.imageURL ?? "", tags: tagss, title: title, id: viewModel.newsForChangeAndDelete?.id ?? 0)
+                if description != "" && description.count > 6 && tags != "" && tags.count > 6 && title != "" && title.count > 6 && image != UIImage(){
+                    tagss.removeAll()
+                    tagss.append(tags)
+                    changeAndDeleteNewsViewModel.uploadFile(image: image){
+                        changeAndDeleteNewsViewModel.putNews(description: description, image: changeAndDeleteNewsViewModel.imageURL ?? "", tags: tagss, title: title, id: changeAndDeleteNewsViewModel.newsForChangeAndDelete?.id ?? 0)
+                    }
+                }
+                else {
+                    wrongAlert = true
                 }
             }, label: {
                 Text("Save Changes")
             })
+            .alert(isPresented: $wrongAlert) {
+                Alert(title: Text("Ошибка!"), message: Text("Заполните все поля (в каждом поле должно быть минимум 7 символов!!!) и выберите картинку новсти!"), dismissButton: Alert.Button.cancel())
+            }
             .onAppear{
-                viewModel.load(url: URL(string: viewModel.newsForChangeAndDelete?.image ?? "")!){ UIImage in
-                    self.image = UIImage
+                changeAndDeleteNewsViewModel.takeTokenFromKeyChain {
+                    changeAndDeleteNewsViewModel.load(url: URL(string: changeAndDeleteNewsViewModel.newsForChangeAndDelete?.image ?? "")!){ UIImage in
+                        self.image = UIImage
+                    }
+                    title = changeAndDeleteNewsViewModel.newsForChangeAndDelete?.title ?? ""
+                    description = changeAndDeleteNewsViewModel.newsForChangeAndDelete?.contentDescription ?? ""
+                    tags = changeAndDeleteNewsViewModel.newsForChangeAndDelete?.tags[0].title ?? ""
                 }
-                title = viewModel.newsForChangeAndDelete?.title ?? ""
-                description = viewModel.newsForChangeAndDelete?.contentDescription ?? ""
-                tags = viewModel.newsForChangeAndDelete?.tags[0].title ?? ""
             }
         }
     }

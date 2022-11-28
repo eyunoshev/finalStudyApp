@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @EnvironmentObject var viewModel: ViewModelNews
+    @EnvironmentObject var signUpViewModel: SignUpViewModel
     
     @State var name: String = ""
     @State var email: String = ""
@@ -51,10 +51,10 @@ struct SignUpView: View {
             MyTextField(text: "role", binding: $role)
             
             Button(action: {
-                if viewModel.imageURL == nil && name != "" && role != "" && email != "" && password != ""{
-                    viewModel.uploadFile(image: image) {
-                        viewModel.register(avatar: viewModel.imageURL ?? "", email: email, name: name, password: password, role: role) {
-                            if viewModel.myToken != "" {
+                if signUpViewModel.imageURL == nil && name != "" && name.count > 5 && role != "" && role.count > 3 && email != "" && email.count > 10 && password != "" && password.count > 10{
+                    signUpViewModel.uploadFile(image: image) {
+                        signUpViewModel.register(avatar: signUpViewModel.imageURL ?? "", email: email, name: name, password: password, role: role) {
+                            if signUpViewModel.myToken != "" {
                                 stateForAlert = true
                             }
                         }
@@ -66,11 +66,13 @@ struct SignUpView: View {
             }, label: {
                 Text("Зарегистрироваться")
             })
+            .modifier(ModifierTextFromImagePicker())
+            .padding()
             .alert(isPresented: $stateForAlert) {
                 Alert(title: Text("Регистрация"), message: Text("Успешна завершена"), dismissButton: Alert.Button.cancel())
             }
             .alert(isPresented: $stateForWrongAlert) {
-                Alert(title: Text("Ошибка!"), message: Text("Заполните все поля и выберите картинку профиля!"), dismissButton: Alert.Button.cancel())
+                Alert(title: Text("Ошибка!"), message: Text("Заполнение полей name,email,role,password и выбор картинки был произведён неправильно! Выберите картинку, и заполните поля. В поле name минимум 6 символов, в поле email минимум 11 символов, в поле role минимум 4 символа, в поле password минимум 11 символов "), dismissButton: Alert.Button.cancel())
             }
         }
     }

@@ -11,7 +11,10 @@ import SwiftUI
 
 struct ListRow: View{
     
-    @EnvironmentObject var viewModel: ViewModelNews
+    @EnvironmentObject var otherProfileViewMpdel: OtherProfileViewMpdel
+    @EnvironmentObject var mainMenuViewModel: MainMenuViewModel
+    @EnvironmentObject var changeAndDeleteNewsViewModel: ChangeAndDeleteNewsViewModel
+    @EnvironmentObject var myProfileViewModel: MyProfileViewModel
     
     @State var isPresentedAlert = false
     @State var eachNews: ContentNews
@@ -23,22 +26,24 @@ struct ListRow: View{
     var body: some View {
         
         VStack(spacing:20){
-            HStack{
-                Text ("author: \(eachNews.username)")
-                    .modifier(ModifierText())
+            HStack(){
+                Text (eachNews.username)
+                    .modifier(ModifierTextFromImagePicker())
                     .onTapGesture {
-                        if eachNews.username != viewModel.myProfile?.name {
-                            viewModel.getUserInfoById(userId: eachNews.userID){
-                                viewModel.getUserNews(userID: eachNews.userID){
-                                    isActiveLinkOtherProfile = true
+                        if eachNews.username != mainMenuViewModel.myProfile?.name {
+                            otherProfileViewMpdel.takeTokenFromKeyChain {
+                                otherProfileViewMpdel.getUserInfoById(userId: eachNews.userID){
+                                    otherProfileViewMpdel.getUserNews(userID: eachNews.userID){
+                                        isActiveLinkOtherProfile = true
+                                    }
                                 }
                             }
                         }
                     }
-                Text ("Show Users News")
-                    .modifier(ModifierText())
+                Text ("Show his news")
+                    .modifier(ModifierTextFromImagePicker())
                     .onTapGesture {
-                        viewModel.getUserNews(userID: eachNews.userID){}
+                        mainMenuViewModel.getUserNews(userID: eachNews.userID){}
                     }
             }
             Text (eachNews.title)
@@ -50,10 +55,10 @@ struct ListRow: View{
             
             HStack{
             Text("Change News")
-                .modifier(ModifierText())
+                .modifier(ModifierTextFromImagePicker())
                 .onTapGesture {
-                    if eachNews.username == viewModel.myProfile?.name {
-                        viewModel.takeNewsForChangeAndDelete(newsForChange: eachNews){
+                    if eachNews.username == mainMenuViewModel.myProfile?.name {
+                        changeAndDeleteNewsViewModel.takeNewsForChangeAndDelete(newsForChange: eachNews){
                             stateForChangeAndDeleteNews = true
                         }
                     }
@@ -63,10 +68,18 @@ struct ListRow: View{
                 }
                 
                 Text("Delete News")
-                    .modifier(ModifierText())
+                    .modifier(ModifierTextFromImagePicker())
                     .onTapGesture {
-                        if eachNews.username == viewModel.myProfile?.name {
-                            viewModel.deleteMyNews(id: eachNews.id)                        }
+                        if eachNews.username == mainMenuViewModel.myProfile?.name {
+                            mainMenuViewModel.deleteMyNews(id: eachNews.id)
+                            mainMenuViewModel.massiveNews.removeAll{ Item in
+                                Item.id == eachNews.id
+                            }
+                            myProfileViewModel.massiveNews.removeAll{ Item in
+                                Item.id == eachNews.id
+                            }
+                            mainMenuViewModel.getNews()
+                        }
                         else{
                             stateForWrongAlertDelete = true
                         }

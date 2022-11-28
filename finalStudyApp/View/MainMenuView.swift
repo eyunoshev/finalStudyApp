@@ -11,7 +11,7 @@ import Foundation
 
 struct MainMenuView: View {
     
-    @EnvironmentObject var viewModel: ViewModelNews
+    @EnvironmentObject var mainMenuViewModel: MainMenuViewModel
     
     @State private var image = UIImage()
     
@@ -32,58 +32,66 @@ struct MainMenuView: View {
                     label: {
                         Text("Add News")
                     })
+                    .modifier(ModifierTextFromImagePicker())
                 Button(action: {
-                    viewModel.updateNews()
+                    mainMenuViewModel.updateNews()
                 }, label: {
                     Text("Show all News")
                 })
-                .opacity((viewModel.stateNewsForSwitchCase == 1) ? 0 : 1 )
+                .modifier(ModifierTextFromImagePicker())
+                .opacity((mainMenuViewModel.stateNewsForSwitchCase == 1) ? 0 : 1 )
                 .onAppear{
-                    viewModel.load(url: URL(string: viewModel.myProfile!.avatar)!){ UIImage in
-                        self.image = UIImage
+                    mainMenuViewModel.takeTokenFromKeyChain {
+                        mainMenuViewModel.getNews()
+                        mainMenuViewModel.getUserInfo {
+                            mainMenuViewModel.load(url: URL(string: mainMenuViewModel.myProfile?.avatar ?? "")!){ UIImage in
+                                self.image = UIImage
+                            }
+                        }
                     }
                 }
-                
             }
             
             Button(action: {
-                viewModel.customAlertFindNews.alertTextField(title: "Find News", message: "Write author/keywords/tags for find news", hintText: "author", secondHintText: "keywords", thirdHintText: "tags", primaryTitle: "Find", secondaryTitle: "Clear") { (auth, keyw, tags) in
-                    viewModel.findNews(author: auth, keywords: keyw, tags: tags)
+                mainMenuViewModel.customAlertFindNews.alertTextField(title: "Find News", message: "Write author/keywords/tags for find news", hintText: "author", secondHintText: "keywords", thirdHintText: "tags", primaryTitle: "Find", secondaryTitle: "Clear") { (auth, keyw, tags) in
+                    mainMenuViewModel.findNews(author: auth, keywords: keyw, tags: tags)
                 } secondaryAction: {
-                    viewModel.updateNews()
+                    mainMenuViewModel.updateNews()
                 }
                 
             }, label: {
                 Text("Search News")
             })
+            .modifier(ModifierTextFromImagePicker())
             .onAppear{
-                viewModel.updateNews()
+                mainMenuViewModel.updateNews()
             }
             
-            switch viewModel.stateNewsForSwitchCase{
+            switch mainMenuViewModel.stateNewsForSwitchCase{
             case 1:
-                List(viewModel.massiveNews){
+                List(mainMenuViewModel.massiveNews){
                     Content in ListRow(eachNews: Content)
                         .onAppear {
                                       // Пагинация
-                            if Content.id == viewModel.massiveNews.last?.id{
-                                          viewModel.addPaginate()
+                            if Content.id == mainMenuViewModel.massiveNews.last?.id{
+                                mainMenuViewModel.addPaginate()
                                       }
                                     }
                 }
                 .padding()
             case 2:
-                List(viewModel.massiveNewsForFind){
+                List(mainMenuViewModel.massiveNewsForFind){
                     Content in ListRow(eachNews: Content)
                 }
             case 3:
-                List(viewModel.massiveNewsForUsersNews){
+                List(mainMenuViewModel.massiveNewsForUsersNews){
                     Content in ListRow(eachNews: Content)
                 }
             default:
                 EmptyView()
             }
         }
+        .navigationBarHidden(true)
         .padding()
         .navigationBarBackButtonHidden(true)
     }

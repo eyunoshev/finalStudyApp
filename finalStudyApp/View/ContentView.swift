@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject var viewModel: ViewModelNews
+    @EnvironmentObject var contentViewModel: ContentViewModel
     
     @State var loginTextField: String = ""
     @State var passwordTextField: String = ""
@@ -29,11 +29,11 @@ struct ContentView: View {
             MyTextField(text: "Password", binding: $passwordTextField)
             
             Button(action: {
-                if loginTextField != "" && passwordTextField != "" {
-                    viewModel.logIn(email: loginTextField, password: passwordTextField){
-                        viewModel.imageURL = viewModel.myProfile?.avatar
-                        if viewModel.myToken != nil {
-                            viewModel.saveToken(myToken: viewModel.myToken ?? "")
+                if loginTextField != "" && loginTextField.count > 10 && passwordTextField != "" && passwordTextField.count > 10 {
+                    contentViewModel.logIn(email: loginTextField, password: passwordTextField){
+                        contentViewModel.imageURL = contentViewModel.myProfile?.avatar
+                        if contentViewModel.myToken != nil {
+                            contentViewModel.saveToken(myToken: contentViewModel.myToken ?? "")
                             isActiveLinkMenu.toggle()
                         }
                     }
@@ -45,15 +45,17 @@ struct ContentView: View {
                 Text("Log In")
             })
             .onAppear{
-                viewModel.takeTokenFromKeyChain{
-                    if viewModel.myToken != nil && viewModel.myToken != "" {
-                        viewModel.getUserInfo{
+                contentViewModel.takeTokenFromKeyChain{
+                    if contentViewModel.myToken != nil && contentViewModel.myToken != "" {
+                        contentViewModel.getUserInfo{
                             isActiveLinkMenu = true
                         }
                     }
                 }
             }
-            .modifier(ModifierButton())
+            .modifier(ModifierTextFromImagePicker())
+            .padding(.horizontal, 100)
+            .padding(.bottom, 200)
             
             
             Text("If you dont have account, create it")
@@ -63,6 +65,8 @@ struct ContentView: View {
                 label: {
                     Text("Sign Up")
                 })
+                .modifier(ModifierTextFromImagePicker())
+                .padding(.horizontal, 100)
             
             NavigationLink(
                 destination: MainMenuView(),
@@ -76,7 +80,7 @@ struct ContentView: View {
 //            Alert(title: Text("Ошибка!"), message: Text("email или пароль не верны!"), dismissButton: Alert.Button.cancel())
 //        }    не получается настроить поток , чтобы он дождался пока токен запишется , прежде чем выводить алерт, ну и не получается 2 аллерта вывести( 
         .alert(isPresented: $stateForWrongAlert) {
-            Alert(title: Text("Ошибка!"), message: Text("Поля email и password не заполненны"), dismissButton: Alert.Button.cancel())
+            Alert(title: Text("Ошибка!"), message: Text("Поля email и password заполненны не корректно: в полях email и password должно быть минимум по 11 символов "), dismissButton: Alert.Button.cancel())
         }
         .navigationBarBackButtonHidden(true)
     }
