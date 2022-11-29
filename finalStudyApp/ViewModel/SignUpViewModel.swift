@@ -13,7 +13,8 @@ class SignUpViewModel: ObservableObject{
     var signInRequest = Register()
     
     @Published var imageURL: String?
-    @Published var myToken: String? = nil
+    
+    var myToken: String? = nil
     
     func uploadFile(image: UIImage, onComplete: @escaping() -> ()){
         uploadFileRequest.uploadFile(image:image) { (URLImage) in

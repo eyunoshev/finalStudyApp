@@ -11,16 +11,18 @@ class MainMenuViewModel: ObservableObject{
     
     var newsRequests = NewsRequests()
     var usersRequests = UserRequests()
+    var customAlertFindNews = CustomAlertFindNews()
     
     @Published var myProfile: DataRegister?
-    @Published var customAlertFindNews = CustomAlertFindNews()
-    @Published var massiveNewsForFind = [ContentNews]()
-    @Published var stateNewsForSwitchCase: Int = 1
-    @Published var myToken: String? = nil
-    @Published var massiveNewsForUsersNews = [ContentNews]()
-    @Published var pageForPaginate: Int = 1
     @Published var massiveNews = [ContentNews]()
     @Published var otherProfile: DataRegister?
+    @Published var massiveNewsForUsersNews = [ContentNews]()
+    
+    var massiveNewsForFind = [ContentNews]()
+    var stateNewsForSwitchCase: Int = 1
+    var myToken: String? = nil
+    var pageForPaginate: Int = 1
+    
     
     
     

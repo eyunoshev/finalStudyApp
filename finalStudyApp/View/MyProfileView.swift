@@ -59,7 +59,7 @@ struct MyProfileView: View {
             Button {
                 if name != "" && name.count > 5 && email != "" && email.count > 10 && role != "" && role.count > 3 && image != nil {
                     myProfileViewModel.uploadFile(image: image){
-                        myProfileViewModel.replaceUser(avatar: myProfileViewModel.imageURL ?? "" , email: email, name: name, role: role)
+                        myProfileViewModel.replaceUser(avatar: myProfileViewModel.imageURL ?? "" , email: email, name: name, role: role, myToken: myProfileViewModel.myToken! )
                     }
                 }
                 else {
@@ -114,6 +114,5 @@ struct MyProfileView: View {
             label: {
                 Text("")
             })
-            .navigationBarHidden(false)
     }
 }

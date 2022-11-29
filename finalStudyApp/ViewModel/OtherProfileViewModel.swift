@@ -14,7 +14,8 @@ class OtherProfileViewMpdel: ObservableObject{
     
     @Published var otherProfile: DataRegister?
     @Published var massiveNews = [ContentNews]()
-    @Published var myToken: String? = nil
+    
+    var myToken: String? = nil
     
     func load(url: URL, onComplete: @escaping (UIImage) -> ()) {
         DispatchQueue.global().async {

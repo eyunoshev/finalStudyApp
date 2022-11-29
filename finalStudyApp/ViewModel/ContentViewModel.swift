@@ -14,7 +14,7 @@ class ContentViewModel: ObservableObject{
     
     @Published var imageURL: String?
     @Published var myProfile: DataRegister?
-    @Published var myToken: String? = nil
+    var myToken: String? = nil
     
     func logIn(email: String, password: String, onComplete: @escaping () -> ()) {
         logInRequest.logIn(email: email, password: password) { GetNews in

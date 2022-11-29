@@ -12,8 +12,8 @@ class AddNewsViewModel: ObservableObject {
     var uploadFileRequest = UploadFile()
     var newsRequests = NewsRequests()
     
-    @Published var imageURLForAddNews: String?
-    @Published var myToken: String? = nil
+    var imageURLForAddNews: String?
+    var myToken: String? = nil
     
     func createMyNews(image: UIImage, onComplete: @escaping ()->()){
         uploadFileRequest.uploadFile(image: image) { (URLImage) in

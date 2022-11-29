@@ -15,9 +15,10 @@ class MyProfileViewModel: ObservableObject{
     
     @Published var imageURL: String?
     @Published var myProfile: DataRegister?
-    @Published var myToken: String? = nil
     @Published var massiveNews = [ContentNews]()
-    @Published var pageForPaginate: Int = 1
+    
+    var myToken: String? = nil
+    var pageForPaginate: Int = 1
     
     
     func uploadFile(image: UIImage, onComplete: @escaping() -> ()){
@@ -27,8 +28,8 @@ class MyProfileViewModel: ObservableObject{
         }
     }
     
-    func replaceUser(avatar: String, email: String, name: String, role: String){
-        usersRequests.replaceUser(avatar: avatar, email: email, name: name, role: role, myToken: myToken!){ (DataRegister) in
+    func replaceUser(avatar: String, email: String, name: String, role: String, myToken: String){
+        usersRequests.replaceUser(avatar: avatar, email: email, name: name, role: role, myToken: myToken){ (DataRegister) in
             self.myProfile = DataRegister.data
             self.imageURL = DataRegister.data.avatar
         }

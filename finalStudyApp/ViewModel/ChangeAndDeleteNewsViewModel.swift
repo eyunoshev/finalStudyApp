@@ -13,8 +13,9 @@ class ChangeAndDeleteNewsViewModel: ObservableObject{
     var uploadFileRequest = UploadFile()
     
     @Published var imageURL: String?
-    @Published var myToken: String? = nil
-    @Published var newsForChangeAndDelete: ContentNews?
+    
+    var myToken: String? = nil
+    var newsForChangeAndDelete: ContentNews?
     
     func uploadFile(image: UIImage, onComplete: @escaping() -> ()){
         uploadFileRequest.uploadFile(image:image) { (URLImage) in

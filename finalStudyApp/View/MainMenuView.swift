@@ -91,7 +91,6 @@ struct MainMenuView: View {
                 EmptyView()
             }
         }
-        .navigationBarHidden(true)
         .padding()
         .navigationBarBackButtonHidden(true)
     }

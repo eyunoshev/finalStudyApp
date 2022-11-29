@@ -29,7 +29,7 @@ struct ContentView: View {
             MyTextField(text: "Password", binding: $passwordTextField)
             
             Button(action: {
-                if loginTextField != "" && loginTextField.count > 10 && passwordTextField != "" && passwordTextField.count > 10 {
+                if loginTextField != "" && loginTextField.count > 10 && passwordTextField != "" && passwordTextField.count > 6 {
                     contentViewModel.logIn(email: loginTextField, password: passwordTextField){
                         contentViewModel.imageURL = contentViewModel.myProfile?.avatar
                         if contentViewModel.myToken != nil {

@@ -51,7 +51,7 @@ struct SignUpView: View {
             MyTextField(text: "role", binding: $role)
             
             Button(action: {
-                if signUpViewModel.imageURL == nil && name != "" && name.count > 5 && role != "" && role.count > 3 && email != "" && email.count > 10 && password != "" && password.count > 10{
+                if signUpViewModel.imageURL == nil && name != "" && name.count > 5 && role != "" && role.count > 3 && email != "" && email.count > 10 && password != "" && password.count > 6{
                     signUpViewModel.uploadFile(image: image) {
                         signUpViewModel.register(avatar: signUpViewModel.imageURL ?? "", email: email, name: name, password: password, role: role) {
                             if signUpViewModel.myToken != "" {
