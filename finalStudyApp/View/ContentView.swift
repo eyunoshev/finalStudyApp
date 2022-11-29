@@ -80,7 +80,7 @@ struct ContentView: View {
 //            Alert(title: Text("Ошибка!"), message: Text("email или пароль не верны!"), dismissButton: Alert.Button.cancel())
 //        }    не получается настроить поток , чтобы он дождался пока токен запишется , прежде чем выводить алерт, ну и не получается 2 аллерта вывести( 
         .alert(isPresented: $stateForWrongAlert) {
-            Alert(title: Text("Ошибка!"), message: Text("Поля email и password заполненны не корректно: в полях email и password должно быть минимум по 11 символов "), dismissButton: Alert.Button.cancel())
+            Alert(title: Text("Ошибка!"), message: Text("Поля email и password заполненны не корректно: в полях email и password должно быть минимум по 8 символов "), dismissButton: Alert.Button.cancel())
         }
         .navigationBarBackButtonHidden(true)
     }

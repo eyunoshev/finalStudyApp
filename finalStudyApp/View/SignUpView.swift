@@ -72,7 +72,7 @@ struct SignUpView: View {
                 Alert(title: Text("Регистрация"), message: Text("Успешна завершена"), dismissButton: Alert.Button.cancel())
             }
             .alert(isPresented: $stateForWrongAlert) {
-                Alert(title: Text("Ошибка!"), message: Text("Заполнение полей name,email,role,password и выбор картинки был произведён неправильно! Выберите картинку, и заполните поля. В поле name минимум 6 символов, в поле email минимум 11 символов, в поле role минимум 4 символа, в поле password минимум 11 символов "), dismissButton: Alert.Button.cancel())
+                Alert(title: Text("Ошибка!"), message: Text("Заполнение полей name,email,role,password и выбор картинки был произведён неправильно! Выберите картинку, и заполните поля. В поле name минимум 6 символов, в поле email минимум 11 символов, в поле role минимум 4 символа, в поле password минимум 7 символов "), dismissButton: Alert.Button.cancel())
             }
         }
     }
