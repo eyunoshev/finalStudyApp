@@ -86,6 +86,7 @@ class UserRequests{
                 do {
                     let decodedProfileUser = try JSONDecoder().decode(SignIn.self, from: data)
                     DispatchQueue.main.async {
+                        print(decodedProfileUser)
                         onComplete(decodedProfileUser)
                     }
                 } catch let error {

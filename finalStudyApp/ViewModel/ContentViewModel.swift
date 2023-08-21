@@ -18,9 +18,9 @@ class ContentViewModel: ObservableObject{
     
     func logIn(email: String, password: String, onComplete: @escaping () -> ()) {
         logInRequest.logIn(email: email, password: password) { GetNews in
-            self.imageURL = GetNews.data.avatar
+            self.imageURL = GetNews.data?.avatar
             self.myProfile = GetNews.data
-            self.myToken = GetNews.data.token
+            self.myToken = GetNews.data?.token
             onComplete()
         }
     }

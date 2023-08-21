@@ -25,7 +25,7 @@ class SignUpViewModel: ObservableObject{
     
     func register(avatar: String, email: String, name: String, password: String, role: String, onComplete: @escaping () ->()){
         signInRequest.register(avatar: avatar, email: email, name: name, password: password, role: role) { (SignIn) in
-            self.myToken = SignIn.data.token
+            self.myToken = SignIn.data?.token
             onComplete()
         }
     }

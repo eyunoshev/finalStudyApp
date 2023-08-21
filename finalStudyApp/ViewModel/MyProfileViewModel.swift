@@ -31,7 +31,7 @@ class MyProfileViewModel: ObservableObject{
     func replaceUser(avatar: String, email: String, name: String, role: String, myToken: String){
         usersRequests.replaceUser(avatar: avatar, email: email, name: name, role: role, myToken: myToken){ (DataRegister) in
             self.myProfile = DataRegister.data
-            self.imageURL = DataRegister.data.avatar
+            self.imageURL = DataRegister.data?.avatar
         }
     }
     

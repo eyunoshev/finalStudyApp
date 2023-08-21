@@ -49,9 +49,9 @@ struct Tag: Codable {
 
 // MARK: - Register
 struct SignIn: Codable {
-    let data: DataRegister
+    let data: DataRegister?
     let statusCode: Int
-    let success: Bool
+    let success: Int
 }
 
 // MARK: - DataClass
