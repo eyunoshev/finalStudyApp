@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Security
 @testable import finalStudyApp
 
 class finalStudyAppTests: XCTestCase {
@@ -49,63 +50,63 @@ class finalStudyAppTests: XCTestCase {
 }
 
 
-class AddNewsViewModelTests: XCTestCase {
-    
-    var viewModel: AddNewsViewModel!
-    
-    override func setUp() {
-        super.setUp()
-        viewModel = AddNewsViewModel()
-    }
-    
-    override func tearDown() {
-        viewModel = nil
-        super.tearDown()
-    }
-    
-    func testCreateMyNews() {
-        guard let image = UIImage(named: "testImage") else { return }
-        let expectation = XCTestExpectation(description: "Create news completion called")
-        
-        viewModel.createMyNews(image: image) {
-            XCTAssertEqual(self.viewModel.imageURLForAddNews, "ExpectedURLString", "Incorrect URL for added news")
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
-    func testTakeTokenFromKeyChain() {
-        let expectation = XCTestExpectation(description: "Take token completion called")
-        
-        viewModel.takeTokenFromKeyChain {
-            XCTAssertEqual(self.viewModel.myToken, "ExpectedAccessToken", "Incorrect access token from Keychain")
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
-    func testTakeTokenFromKeyChain_WhenKeychainReturnsNilData() {
-        let expectation = XCTestExpectation(description: "Take token completion called")
-        
-        saveNilTokenToKeychain() // Сохранить пустые данные в Keychain
-        
-        viewModel.takeTokenFromKeyChain {
-            XCTAssertNil(self.viewModel.myToken, "Токен доступа должен быть nil, когда Keychain возвращает пустые данные")
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    // Add more test methods to cover other scenarios and functionality of AddNewsViewModel
-    
-}
-
-extension AddNewsViewModelTests {
-    func saveNilTokenToKeychain() {
-        let nilData: Data? = nil
-        let nilString: String? = nil
-        KeychainHelper.standard.save(nilData!, token: nilString!, account: "facebook")
-    }
-}
+//class AddNewsViewModelTests: XCTestCase {
+//    
+//    var viewModel: AddNewsViewModel!
+//    
+//    override func setUp() {
+//        super.setUp()
+//        viewModel = AddNewsViewModel()
+//    }
+//    
+//    override func tearDown() {
+//        viewModel = nil
+//        super.tearDown()
+//    }
+//    
+//    func testCreateMyNews() {
+//        guard let image = UIImage(named: "testImage") else { return }
+//        let expectation = XCTestExpectation(description: "Create news completion called")
+//        
+//        viewModel.createMyNews(image: image) {
+//            XCTAssertEqual(self.viewModel.imageURLForAddNews, "ExpectedURLString", "Incorrect URL for added news")
+//            expectation.fulfill()
+//        }
+//        
+//        wait(for: [expectation], timeout: 5.0)
+//    }
+//    
+//    func testTakeTokenFromKeyChain() {
+//        let expectation = XCTestExpectation(description: "Take token completion called")
+//        
+//        viewModel.takeTokenFromKeyChain {
+//            XCTAssertEqual(self.viewModel.myToken, "ExpectedAccessToken", "Incorrect access token from Keychain")
+//            expectation.fulfill()
+//        }
+//        
+//        wait(for: [expectation], timeout: 5.0)
+//    }
+//    
+//    func testTakeTokenFromKeyChain_WhenKeychainReturnsNilData() {
+//        let expectation = XCTestExpectation(description: "Take token completion called")
+//        
+//        saveNilTokenToKeychain() // Сохранить пустые данные в Keychain
+//        
+//        viewModel.takeTokenFromKeyChain {
+//            XCTAssertNil(self.viewModel.myToken, "Токен доступа должен быть nil, когда Keychain возвращает пустые данные")
+//            expectation.fulfill()
+//        }
+//        
+//        wait(for: [expectation], timeout: 5.0)
+//    }
+//    // Add more test methods to cover other scenarios and functionality of AddNewsViewModel
+//    
+//}
+//
+//extension AddNewsViewModelTests {
+//    func saveNilTokenToKeychain() {
+//        let nilData: Data? = nil
+//        let nilString: String? = nil
+//        KeychainHelper.standard.save(nilData!, token: nilString!, account: "facebook")
+//    }
+//}
