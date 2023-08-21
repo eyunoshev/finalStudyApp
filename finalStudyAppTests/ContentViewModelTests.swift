@@ -120,7 +120,7 @@ class ContentViewModelTests: XCTestCase {
     // мок запроса logIn
     
     func testLogInWithMock() {
-        let expectation = XCTestExpectation(description: "Log in completion called")
+        let expectation = XCTestExpectation(description: "onComplete в методе моем")
         
         let mockLogIn = MockLogIn()
         mockLogIn.shouldSucceed = true
@@ -143,7 +143,7 @@ class ContentViewModelTests: XCTestCase {
     // тут тест ловит пустые данные с запроса лог ин при вводе неправильных кредов 
 
     func testLogInWithIncorrectCredentials() {
-        let expectation = XCTestExpectation(description: "Log in completion called")
+        let expectation = XCTestExpectation(description: "onComplete в методе моем")
         
         let mockLogIn = MockLogIn()
         mockLogIn.shouldSucceed = false
@@ -154,9 +154,9 @@ class ContentViewModelTests: XCTestCase {
         viewModel.usersRequests = mockUserRequests
         
         viewModel.logIn(email: "test@example.com", password: "wrongPassword") {
-            XCTAssertNil(self.viewModel.imageURL, "Image URL should not be updated with incorrect login")
-            XCTAssertNil(self.viewModel.myProfile, "My profile should not be updated with incorrect login")
-            XCTAssertNil(self.viewModel.myToken, "My token should not be updated with incorrect login")
+            XCTAssertNil(self.viewModel.imageURL, "URL-адрес изображения не должен обновляться при неправильном логине")
+            XCTAssertNil(self.viewModel.myProfile, "профиль не должен обновляться при неправильном логине")
+            XCTAssertNil(self.viewModel.myToken, "токен не должен обновляться при неправильном входе в систему")
             expectation.fulfill()
         }
         
@@ -167,7 +167,7 @@ class ContentViewModelTests: XCTestCase {
     //Проверка работы кейчейна
     
     func testSaveAndTakeTokenFromKeyChain() {
-        let expectation = XCTestExpectation(description: "Take token completion called")
+        let expectation = XCTestExpectation(description: "onComplete в методе моем")
         
         //сначала сохраняем токен в кей чейн
         
@@ -177,7 +177,7 @@ class ContentViewModelTests: XCTestCase {
         // теперь пробуем достать
         
         viewModel.takeTokenFromKeyChain {
-            XCTAssertEqual(self.viewModel.myToken, myToken, "Token not retrieved correctly from Keychain")
+            XCTAssertEqual(self.viewModel.myToken, myToken, "Токен некорректно извлекается из связки ключей")
             expectation.fulfill()
         }
         
@@ -188,7 +188,7 @@ class ContentViewModelTests: XCTestCase {
     // запрос getUserInfo с мок данными
     
     func testGetUserInfoWithMock() {
-        let expectation = XCTestExpectation(description: "Get user info completion called")
+        let expectation = XCTestExpectation(description: "onComplete в методе моем")
         
         let mockUserRequests = MockUserRequests()
         mockUserRequests.shouldSucceed = true
@@ -197,7 +197,7 @@ class ContentViewModelTests: XCTestCase {
         viewModel.myToken = "TestToken" // Устанавливаем токен
         
         viewModel.getUserInfo {
-            XCTAssertEqual(self.viewModel.myProfile?.name, "Antonio", "Incorrect profile name after getting user info")
+            XCTAssertEqual(self.viewModel.myProfile?.name, "Antonio", "Неправильное имя профиля после получения информации о пользователе")
             expectation.fulfill()
         }
         
@@ -207,7 +207,7 @@ class ContentViewModelTests: XCTestCase {
     // тут смотрим если с запроса на получения данных ничего не пришло
     
     func testGetUserInfoWithMockError() {
-        let expectation = XCTestExpectation(description: "Get user info completion called")
+        let expectation = XCTestExpectation(description: "onComplete в методе моем")
         
         let mockUserRequests = MockUserRequests()
         mockUserRequests.shouldSucceed = false // Устанавливаем моку генерацию ошибки
@@ -216,7 +216,7 @@ class ContentViewModelTests: XCTestCase {
         viewModel.myToken = "TestToken" // Устанавливаем токен
         
         viewModel.getUserInfo {
-            XCTAssertNil(self.viewModel.myProfile, "My profile should not be updated on error")
+            XCTAssertNil(self.viewModel.myProfile, "Мой профиль не должен обновляться при ошибке")
             expectation.fulfill()
         }
         
@@ -227,8 +227,8 @@ class ContentViewModelTests: XCTestCase {
     // тут проверяю правильную последовательность выполнения комплишенов
     
     func testAsyncMethodsCompletion() {
-        let logInExpectation = XCTestExpectation(description: "Log in completion called")
-        let userInfoExpectation = XCTestExpectation(description: "Get user info completion called")
+        let logInExpectation = XCTestExpectation(description: "onComplete в методе logInRequest")
+        let userInfoExpectation = XCTestExpectation(description: "onComplete в методе usersRequests")
         
         let mockUserRequests = MockUserRequests()
         let mockLogIn = MockLogIn()

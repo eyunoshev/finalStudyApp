@@ -60,7 +60,5 @@ final class KeychainHelper {
         // Delete item from keychain
         SecItemDelete(query)
     }
-
-    // Class implementation here...
 }
 
